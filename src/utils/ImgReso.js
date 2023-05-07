@@ -1,4 +1,4 @@
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import CRC32 from "crc-32";
 
 const convertList = {
@@ -21,20 +21,26 @@ const loadBalance = (list, id) => {
 };
 
 const calcImg = function (id, page, imgDate, reso) {
-  var date = new Date(imgDate);
-  var Y = date.getFullYear().toString();
-  var M = (
-    date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
-  )
-    .toString()
-    .padStart(2, "0");
-  var D = date.getDate().toString().padStart(2, "0");
-  var h = date.getHours().toString().padStart(2, "0");
-  var m = date.getMinutes().toString().padStart(2, "0");
-  var s = date.getSeconds().toString().padStart(2, "0");
   var url = loadBalance(proxyList, { id: id, page: page });
   url += convertList[reso][0];
-  url += `${Y}/${M}/${D}/${h}/${m}/${s}`;
+  if (imgDate.includes("T")) {
+    var date = new Date(imgDate);
+    var Y = date.getFullYear().toString();
+    var M = (
+      date.getMonth() + 1 < 10
+        ? "0" + (date.getMonth() + 1)
+        : date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0");
+    var D = date.getDate().toString().padStart(2, "0");
+    var h = date.getHours().toString().padStart(2, "0");
+    var m = date.getMinutes().toString().padStart(2, "0");
+    var s = date.getSeconds().toString().padStart(2, "0");
+    url += `${Y}/${M}/${D}/${h}/${m}/${s}`;
+  } else {
+    url += imgDate;
+  }
   if (page == -1) {
     url += `/${id}`;
   } else {
@@ -48,20 +54,26 @@ const calcImg = function (id, page, imgDate, reso) {
 };
 
 const calcUgoira = function (id, imgDate, reso) {
-  var date = new Date(imgDate);
-  var Y = date.getFullYear().toString();
-  var M = (
-    date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
-  )
-    .toString()
-    .padStart(2, "0");
-  var D = date.getDate().toString().padStart(2, "0");
-  var h = date.getHours().toString().padStart(2, "0");
-  var m = date.getMinutes().toString().padStart(2, "0");
-  var s = date.getSeconds().toString().padStart(2, "0");
   var url = loadBalance(proxyList, { id: id, page: -1 });
   url += ugoiraConvertList[reso][0];
-  url += `${Y}/${M}/${D}/${h}/${m}/${s}`;
+  if (imgDate.includes("T")) {
+    var date = new Date(imgDate);
+    var Y = date.getFullYear().toString();
+    var M = (
+      date.getMonth() + 1 < 10
+        ? "0" + (date.getMonth() + 1)
+        : date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0");
+    var D = date.getDate().toString().padStart(2, "0");
+    var h = date.getHours().toString().padStart(2, "0");
+    var m = date.getMinutes().toString().padStart(2, "0");
+    var s = date.getSeconds().toString().padStart(2, "0");
+    url += `${Y}/${M}/${D}/${h}/${m}/${s}`;
+  } else {
+    url += imgDate;
+  }
   url += `/${id}`;
   url += ugoiraConvertList[reso][1];
   url += ".zip";

@@ -3,7 +3,7 @@ import db from "./idb";
 import Lodash from "lodash";
 import { renewAccessTokenIfExpired, getAccessToken } from "./account";
 import axios from "axios";
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import storage from "store2";
 import { SnackbarProgrammatic as Snackbar } from "buefy";
 

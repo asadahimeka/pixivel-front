@@ -15,6 +15,8 @@ export async function addHistory(illust) {
     "sanity",
     "title",
     "image",
+    "xRestrict",
+    "aiType",
   ]);
   thumbIllust["time"] = new Date().getTime();
   let count = await db[HISTORY_DATABASE_NAME].update(

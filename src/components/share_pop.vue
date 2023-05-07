@@ -1,5 +1,5 @@
 <template>
-  <div class="box has-text-centered">
+  <div class="box has-text-centered" style="position: relative; z-index: 9">
     <b-field label="分享链接">
       <b-input v-model="url" id="copyInput"></b-input>
       <p class="control">
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import ClipboardJS from "clipboard";
 
 export default {

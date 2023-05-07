@@ -7,90 +7,90 @@
       </transition>
     </keep-alive>
     <Footer />
-    <b-modal v-model="showSponsor" has-modal-card trap-focus>
+    <!-- <b-modal v-model="showSponsor" has-modal-card trap-focus>
       <template>
         <Sponsor @close="showSponsor = false" />
       </template>
-    </b-modal>
+    </b-modal> -->
   </div>
 </template>
 
 <script>
 import Nav from "@/components/nav";
 import Footer from "@/components/footer.vue";
-import CheckAnnounce from "@/utils/checkAnnounce";
-import Sponsor from "@/components/sponsor";
-import storage from "store2";
-import { clearAccountInformation, isLoggedIn } from "@/utils/account";
-import { syncBookMark } from "@/utils/bookmark";
-import { syncFollow } from "@/utils/follow";
+// import CheckAnnounce from "@/utils/checkAnnounce";
+// import Sponsor from "@/components/sponsor";
+// import storage from "store2";
+// import { clearAccountInformation, isLoggedIn } from "@/utils/account";
+// import { syncBookMark } from "@/utils/bookmark";
+// import { syncFollow } from "@/utils/follow";
 
 export default {
   name: "App",
   components: {
     Nav,
     Footer,
-    Sponsor,
+    // Sponsor,
   },
   data() {
     return {
-      showSponsor: false,
+      // showSponsor: false,
     };
   },
   async mounted() {
-    this.sponsorShow();
-    this.announceShow();
+    // this.sponsorShow();
+    // this.announceShow();
     this.addDownloadNotify();
-    await this.syncHook();
+    // await this.syncHook();
     window.addEventListener(
       "new-content-available",
       this.showNewContentAvailable
     );
   },
   methods: {
-    async syncHook() {
-      if (isLoggedIn()) {
-        await syncBookMark();
-        await syncFollow();
-      } else {
-        if (storage.has("refresh_token")) {
-          clearAccountInformation();
-        }
-      }
-      document.addEventListener("visibilitychange", function () {
-        if (isLoggedIn()) {
-          syncBookMark();
-          syncFollow();
-        }
-      });
-    },
-    announceShow() {
-      CheckAnnounce().then((Anno) => {
-        let infoshow = "";
-        Anno[0].forEach((key, index) => {
-          infoshow += Anno[1][key];
-          if (index < Anno[0].length - 1) {
-            infoshow += "<hr>";
-          }
-        });
-        if (infoshow != "") {
-          this.$buefy.notification.open({
-            duration: 60000,
-            message: infoshow,
-            type: "is-primary",
-          });
-        }
-      });
-    },
-    sponsorShow() {
-      let lastTime = storage.get("last_sponsor_show_time", 0);
-      let now = new Date().getTime();
-      if (lastTime < now - 864000000) {
-        // ten days
-        this.showSponsor = true;
-        storage.set("last_sponsor_show_time", now);
-      }
-    },
+    // async syncHook() {
+    //   if (isLoggedIn()) {
+    //     await syncBookMark();
+    //     await syncFollow();
+    //   } else {
+    //     if (storage.has("refresh_token")) {
+    //       clearAccountInformation();
+    //     }
+    //   }
+    //   document.addEventListener("visibilitychange", function () {
+    //     if (isLoggedIn()) {
+    //       syncBookMark();
+    //       syncFollow();
+    //     }
+    //   });
+    // },
+    // announceShow() {
+    //   CheckAnnounce().then((Anno) => {
+    //     let infoshow = "";
+    //     Anno[0].forEach((key, index) => {
+    //       infoshow += Anno[1][key];
+    //       if (index < Anno[0].length - 1) {
+    //         infoshow += "<hr>";
+    //       }
+    //     });
+    //     if (infoshow != "") {
+    //       this.$buefy.notification.open({
+    //         duration: 60000,
+    //         message: infoshow,
+    //         type: "is-primary",
+    //       });
+    //     }
+    //   });
+    // },
+    // sponsorShow() {
+    //   let lastTime = storage.get("last_sponsor_show_time", 0);
+    //   let now = new Date().getTime();
+    //   if (lastTime < now - 864000000) {
+    //     // ten days
+    //     this.showSponsor = true;
+    //     storage.set("last_sponsor_show_time", now);
+    //   }
+    // },
     addDownloadNotify() {
       window.addEventListener("beforeunload", (e) => {
         if (!this.$store.getters["Pic/isDownloadFinish"]) {
@@ -130,7 +130,19 @@ body {
   margin: 0;
   color: #111;
 
-  font-family: "ResourceHanRoundedCN Regular", "ResourceHanRoundedCN Light" !important;
+  // font-family: "ResourceHanRoundedCN Regular", "ResourceHanRoundedCN Light" !important;
+}
+
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: "LXGW WenKai", -apple-system, BlinkMacSystemFont, Segoe UI,
+    PingFang SC, Hiragino Sans GB, Source Han Sans SC, Source Han Sans CN,
+    Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol !important;
 }
 
 @media (prefers-color-scheme: light) {
@@ -140,14 +152,14 @@ body {
   }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "ResourceHanRoundedCN Medium" !important;
-}
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   font-family: "ResourceHanRoundedCN Medium" !important;
+// }
 
 .no-margin-bottom {
   margin-bottom: 0 !important;

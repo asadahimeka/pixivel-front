@@ -12,8 +12,7 @@
       class="waterfall-container"
     >
       <template slot-scope="illust">
-        <AdsCard v-if="illust.data.type == -1" />
-        <ImgCard :illust="illust.data" v-else />
+        <ImgCard :illust="illust.data" />
       </template>
     </VirtualMasonry>
   </div>
@@ -21,7 +20,7 @@
 
 <script>
 import ImgCard from "@/components/imgcard";
-import AdsCard from "@/components/adscard";
+import { isItemShow } from "@/utils/adapter";
 
 export default {
   name: "WaterFall",
@@ -46,7 +45,6 @@ export default {
   },
   components: {
     ImgCard,
-    AdsCard,
   },
   watch: {
     illusts: "illustsChange",
@@ -99,7 +97,7 @@ export default {
     illustsFiltered() {
       let sanity = this.$store.getters["Settings/get"]("global.sanity_filter");
       let illusts = this.illusts.filter((item) => {
-        return item.sanity < sanity;
+        return isItemShow(item) && item.sanity < sanity;
       });
       if (this.showAd !== -1 && illusts.length > this.showAd) {
         illusts.splice(this.showAd, 0, {

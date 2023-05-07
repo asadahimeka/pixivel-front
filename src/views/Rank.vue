@@ -45,7 +45,7 @@
           editable
         >
         </b-datepicker>
-        <p class="control">
+        <!-- <p class="control">
           <b-dropdown v-model="content">
             <template #trigger>
               <b-button
@@ -62,7 +62,7 @@
               <span>{{ item }}</span>
             </b-dropdown-item>
           </b-dropdown>
-        </p>
+        </p> -->
       </b-field>
     </div>
     <div class="container">
@@ -91,8 +91,10 @@
 </template>
 
 <script>
-import CONFIG from "@/config.json";
+import Lodash from "lodash";
+import CONFIG from "@/config";
 import WaterFall from "@/components/waterfall";
+import { adaptIllusts } from "@/utils/adapter";
 
 export default {
   name: "Rank",
@@ -101,7 +103,7 @@ export default {
   },
   data() {
     return {
-      mode: "daily",
+      mode: "day",
       content: "all",
       date: this.moment().subtract(2, "days")._d,
       errorMsg: "",
@@ -109,31 +111,31 @@ export default {
       loadid: +new Date(),
       illustsPage: 0,
       rankLable: {
-        daily: "日榜",
-        weekly: "周榜",
-        monthly: "月榜",
-        rookie: "新人榜",
-        original: "原创榜",
-        male: "男榜",
-        female: "女榜",
+        day: "日榜",
+        week: "周榜",
+        month: "月榜",
+        week_rookie: "新人",
+        week_original: "原创",
+        day_male: "男榜",
+        day_female: "女榜",
       },
       rankType: {
-        daily: "primary",
-        weekly: "success",
-        monthly: "link",
-        rookie: "warning",
-        original: "light",
-        male: "info",
-        female: "danger",
+        day: "primary",
+        week: "success",
+        month: "link",
+        week_rookie: "info",
+        week_original: "info",
+        day_male: "warning",
+        day_female: "warning",
       },
       rankIcon: {
-        daily: "sun",
-        weekly: "calendar-alt",
-        monthly: "moon",
-        rookie: "newspaper",
-        original: "images",
-        male: "mars",
-        female: "venus",
+        day: "sun",
+        week: "calendar-alt",
+        month: "moon",
+        week_rookie: "newspaper",
+        week_original: "images",
+        day_male: "mars",
+        day_female: "venus",
       },
       rankContent: {
         all: "所有类型",
@@ -143,13 +145,13 @@ export default {
       },
       rankContentModes: {
         all: [
-          "daily",
-          "weekly",
-          "monthly",
-          "rookie",
-          "original",
-          "male",
-          "female",
+          "day",
+          "week",
+          "month",
+          "week_rookie",
+          "week_original",
+          "day_male",
+          "day_female",
         ],
         illust: ["daily", "weekly", "monthly", "rookie"],
         manga: ["daily", "weekly", "monthly", "rookie"],
@@ -166,7 +168,7 @@ export default {
       });
     },
     content() {
-      this.mode = "daily";
+      this.mode = "day";
       this.refresh();
       this.$router.push({
         name: "Rank",
@@ -190,7 +192,7 @@ export default {
   created() {
     this.mode = this.$route.query.mode;
     this.content = this.$route.query.content;
-    if (!this.mode) this.mode = "daily";
+    if (!this.mode) this.mode = "day";
     if (!this.content) this.content = "all";
   },
   methods: {
@@ -201,27 +203,29 @@ export default {
       this.illustsPage = 0;
       this.$store.commit("CancelRequests/clearCancelToken");
     },
-    illustsPageNext($state) {
+    illustsPageNext: Lodash.throttle(function ($state) {
       let params = {
         mode: this.mode,
-        content: this.content,
-        date: this.moment(this.date).format("YYYYMMDD"),
-        page: this.illustsPage,
+        // content: this.content,
+        date: this.moment(this.date).format("YYYY-MM-DD"),
+        page: this.illustsPage + 1,
       };
       this.axios
-        .get(CONFIG.API_HOST + `rank/`, {
+        .get(CONFIG.API_HOST + `rank`, {
           params,
         })
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             $state.error();
             return;
           }
-          if (!response.data.data.has_next) {
+          if (!response.data.next_url) {
             $state.complete();
           }
-          this.illusts = this.illusts.concat(response.data.data.illusts);
+          this.illusts = this.illusts.concat(
+            adaptIllusts(response.data.illusts)
+          );
           this.illustsPage += 1;
           $state.loaded();
         })
@@ -231,7 +235,7 @@ export default {
           }
           $state.error();
         });
-    },
+    }, 1500),
     error(message) {
       this.$buefy.notification.open({
         duration: 5000,

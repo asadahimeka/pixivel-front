@@ -1,5 +1,5 @@
 import storage from "store2";
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import axios from "axios";
 import Lodash from "lodash";
 

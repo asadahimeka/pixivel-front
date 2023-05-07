@@ -24,7 +24,7 @@
             position="is-centered"
           ></b-skeleton>
         </h1>
-        <div class="button-container">
+        <!-- <div class="button-container">
           <template v-if="islogin">
             <Follow :user="user" v-if="user" />
           </template>
@@ -35,7 +35,7 @@
             v-if="user"
             :info="user.name"
           />
-        </div>
+        </div> -->
         <hr />
         <p class="subtitle is-6 bio-container break-raw-text">
           <template v-if="!user">
@@ -47,7 +47,7 @@
         </p>
       </div>
     </section>
-    <div class="container" v-if="user">
+    <div class="container" v-if="user" style="margin-top: 0.8rem">
       <WaterFall :illusts="userIllusts" />
       <infinite-loading @infinite="illustsPageNext" spinner="spiral">
         <div slot="no-more">加载完毕</div>
@@ -71,13 +71,15 @@
 </template>
 
 <script>
-import CONFIG from "@/config.json";
+import Lodash from "lodash";
+import CONFIG from "@/config";
 import WaterFall from "@/components/waterfall";
 import LoadImg from "@/components/load_img.vue";
 import LongLoadingBadage from "@/components/longloading_badage";
-import Follow from "@/components/follow_button";
-import { isLoggedIn } from "@/utils/account";
-import ShareButton from "@/components/share_button";
+// import Follow from "@/components/follow_button";
+// import { isLoggedIn } from "@/utils/account";
+// import ShareButton from "@/components/share_button";
+import { adaptUser, adaptIllusts } from "@/utils/adapter";
 
 export default {
   name: "User",
@@ -85,8 +87,8 @@ export default {
     WaterFall,
     LoadImg,
     LongLoadingBadage,
-    Follow,
-    ShareButton,
+    // Follow,
+    // ShareButton,
   },
   data() {
     return {
@@ -96,7 +98,7 @@ export default {
       user: null,
       userIllusts: [],
       illustsPage: 0,
-      islogin: isLoggedIn(),
+      // islogin: isLoggedIn(),
     };
   },
   created() {
@@ -116,13 +118,13 @@ export default {
       this.loading.close();
     } else {
       this.axios
-        .get(CONFIG.API_HOST + `user/${this.id}`)
+        .get(CONFIG.API_HOST + `member?id=${this.id}`)
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             return;
           }
-          this.user = response.data.data;
+          this.user = adaptUser(response.data);
           this.loading.close();
           this.$store.commit("Cache/cacheState", {
             key: {
@@ -133,7 +135,7 @@ export default {
           });
         })
         .catch((error) => {
-          this.error(error.response.data.message);
+          this.error(error.message);
           this.loading.close();
         });
     }
@@ -161,26 +163,26 @@ export default {
         this.userIllusts = cachedUesrIllusts["illusts"];
       }
     },
-    illustsPageNext($state) {
+    illustsPageNext: Lodash.throttle(function ($state) {
       this.$refs.longloading_badage.start();
       this.axios
-        .get(CONFIG.API_HOST + `user/${this.id}/illusts`, {
+        .get(CONFIG.API_HOST + `member_illust?id=${this.id}`, {
           params: {
-            page: this.illustsPage,
+            page: this.illustsPage + 1,
           },
         })
         .then((response) => {
           this.$refs.longloading_badage.stop();
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             $state.error();
             return;
           }
-          if (!response.data.data.has_next) {
+          if (!response.data.next_url) {
             $state.complete();
           }
           this.userIllusts = this.userIllusts.concat(
-            response.data.data.illusts
+            adaptIllusts(response.data.illusts)
           );
           this.illustsPage += 1;
           $state.loaded();
@@ -192,7 +194,7 @@ export default {
             val: {
               page: this.illustsPage,
               illusts: this.userIllusts,
-              showloading: response.data.data.has_next,
+              showloading: !!response.data.next_url,
             },
           });
         })
@@ -201,7 +203,7 @@ export default {
           $state.error();
           this.$refs.longloading_badage.stop();
         });
-    },
+    }, 1500),
   },
   computed: {
     background() {

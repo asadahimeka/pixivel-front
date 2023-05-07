@@ -6,7 +6,7 @@
           <img src="../assets/images/favicon.png" />
         </b-navbar-item>
         <div class="title-container">
-          <h3 class="title is-3">Pixivel</h3>
+          <h3 class="title is-3">Pixivel Front</h3>
         </div>
       </template>
       <template #end>
@@ -26,7 +26,7 @@
             <template #empty>No results found</template>
           </b-autocomplete>
         </b-navbar-item>
-        <template v-if="isLoggedIn">
+        <!-- <template v-if="isLoggedIn">
           <b-navbar-item
             class="hide-on-computer has-text-centered"
             @click="$router.push({ name: 'Account' })"
@@ -41,8 +41,8 @@
           >
             登录或者注册
           </b-navbar-item>
-        </template>
-        <b-navbar-item tag="div" class="hide-on-phone">
+        </template> -->
+        <!-- <b-navbar-item tag="div" class="hide-on-phone">
           <b-dropdown aria-role="list" position="is-bottom-left">
             <template #trigger>
               <p class="image is-64x64" role="button">
@@ -76,7 +76,7 @@
               >
             </template>
           </b-dropdown>
-        </b-navbar-item>
+        </b-navbar-item> -->
       </template>
     </b-navbar>
     <div class="full-screen">
@@ -133,7 +133,7 @@
       </infinite-loading>
     </div>
 
-    <b-modal
+    <!-- <b-modal
       :active="showLoginPanel"
       has-modal-card
       trap-focus
@@ -143,18 +143,19 @@
       <template>
         <Login @close="showLoginPanel = false"></Login>
       </template>
-    </b-modal>
+    </b-modal> -->
   </section>
 </template>
 
 <script>
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import WaterFall from "@/components/waterfall";
 import HScroll from "@/components/horizontal_scroll";
 import UserList from "@/components/user_list";
-import Login from "@/components/login";
+// import Login from "@/components/login";
 import { getUserInfo, isLoggedIn, deleteToken } from "@/utils/account";
 import md5 from "@/utils/md5";
+import { adaptIllusts, adaptSampleUser } from "@/utils/adapter";
 
 export default {
   name: "Landing",
@@ -162,7 +163,7 @@ export default {
     WaterFall,
     HScroll,
     UserList,
-    Login,
+    // Login,
   },
   data() {
     return {
@@ -187,19 +188,21 @@ export default {
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.searchKeyword != "") {
         this.axios
-          .get(CONFIG.API_HOST + `illust/search/${this.searchKeyword}/suggest`)
+          .get(
+            CONFIG.API_HOST + `search_autocomplete?word=${this.searchKeyword}`
+          )
           .then((response) => {
             if (response.data.error) {
-              this.error(response.data.message);
+              this.error(response.data.error.user_message);
               return;
             }
-            this.searchSuggestList = response.data.data.suggest_words;
+            this.searchSuggestList = response.data.tags.map((e) => e.name);
           })
           .catch((error) => {
             this.error(error.message);
           });
       }
-    }, 800);
+    }, 1000);
   },
   mounted() {},
   computed: {
@@ -236,15 +239,17 @@ export default {
     },
     sampleIllustsPageNext($state) {
       let params = {
-        p: this.sampleIllustsPage,
+        // p: this.sampleIllustsPage,
+        include_ranking_illusts: false,
+        include_privacy_policy: false,
       };
       this.axios
-        .get(CONFIG.API_HOST + `illusts/sample`, {
+        .get(CONFIG.API_HOST + `illust_recommended`, {
           params,
         })
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             $state.error();
             return;
           }
@@ -252,16 +257,17 @@ export default {
             "sample.sanity_filter"
           );
           this.sampleIllusts = this.sampleIllusts.concat(
-            response.data.data.illusts.filter((item) => {
+            adaptIllusts(response.data.illusts).filter((item) => {
               return item.sanity < sanity;
             })
           );
-          if (this.sampleIllustsPage >= 20) {
-            $state.complete();
-            return;
-          }
+          // if (this.sampleIllustsPage >= 20) {
+          //   $state.complete();
+          //   return;
+          // }
+          $state.complete();
           $state.loaded();
-          this.sampleIllustsPage += 1;
+          // this.sampleIllustsPage += 1;
         })
         .catch((error) => {
           this.error(error.message);
@@ -270,23 +276,26 @@ export default {
     },
     loadSampleUsers() {
       let params = {
-        p: this.sampleUsersPage,
+        // p: this.sampleUsersPage,
       };
       this.axios
-        .get(CONFIG.API_HOST + `user/sample`, {
+        .get(CONFIG.API_HOST + `user_recommended`, {
           params,
         })
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             return;
           }
-          this.sampleUsers = this.sampleUsers.concat(response.data.data.users);
-          if (this.sampleIllustsPage >= 20) {
-            this.sampleUsersLoadFlag = false;
-            return;
-          }
-          this.sampleUsersPage += 1;
+          this.sampleUsers = this.sampleUsers.concat(
+            response.data.user_previews.map(adaptSampleUser)
+          );
+          this.sampleUsersLoadFlag = false;
+          // if (this.sampleIllustsPage >= 20) {
+          //   this.sampleUsersLoadFlag = false;
+          //   return;
+          // }
+          // this.sampleUsersPage += 1;
         })
         .catch((error) => {
           this.error(error.message);
@@ -323,27 +332,27 @@ export default {
     },
     loadRankIllusts() {
       let params = {
-        mode: "daily",
-        content: "all",
-        date: this.moment().subtract(2, "days").format("YYYYMMDD"),
-        page: this.rankIllustsPage,
+        mode: "day",
+        // content: "all",
+        date: this.moment().subtract(2, "days").format("YYYY-MM-DD"),
+        page: this.rankIllustsPage + 1,
       };
       this.axios
-        .get(CONFIG.API_HOST + `rank/`, {
+        .get(CONFIG.API_HOST + `rank`, {
           params,
         })
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             return;
           }
-          if (!response.data.data.has_next) {
-            this.rankIllustsContinue = false;
-          }
+          // if (!response.data.next_url) {
+          this.rankIllustsContinue = false;
+          // }
           this.rankIllusts = this.rankIllusts.concat(
-            response.data.data.illusts
+            adaptIllusts(response.data.illusts)
           );
-          this.rankIllustsPage += 1;
+          // this.rankIllustsPage += 1;
         })
         .catch((error) => {
           this.error(error.message);
@@ -361,6 +370,10 @@ export default {
 </script>
 
 <style lang="scss">
+.container {
+  padding-bottom: 20px;
+}
+
 .user-ava {
   object-fit: cover;
   width: 100%;

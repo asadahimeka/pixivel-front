@@ -116,7 +116,7 @@
 
 <script>
 import validate from "validate.js";
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import Turnstile from "@/components/turnstile";
 import qs from "qs";
 import {

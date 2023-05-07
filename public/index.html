@@ -13,15 +13,22 @@
     <meta id="og-desc" property="og:description" content="Pixivel 是Pixiv的一个镜像站。支持高级搜索，自定义的推荐，超方便的一键下载图片！还支持登录收藏和关注插画师！看看有没有你中意的插画吧！" />
     <meta id="og-image" property="og:image" content="<%= BASE_URL %>favicon.ico" />
     <meta id="og-url" property="og:url" content="/" />
+    <meta name="referrer" content="no-referrer">
     <meta property="Entertainment" content="article" />
     <meta http-equiv="x-dns-prefetch-control" content="on" />
-    <link rel="preconnect" href="https://api.pixivel.moe/" crossorigin />
-    <link rel="preconnect" href="https://proxy.pixivel.moe/" crossorigin />
-    <link rel="preload" href="<%= require('@/assets/fonts/ResourceHanRoundedCN-Light.woff2') %>" as="font" crossorigin />
+    <link rel="dns-prefetch" href="<%= process.env.VUE_APP_HIBIAPI_HOST %>">
+    <link rel="dns-prefetch" href="<%= process.env.VUE_APP_PXIMG_PROXY %>">
+    <link rel="preconnect" href="<%= process.env.VUE_APP_HIBIAPI_HOST %>" crossorigin />
+    <link rel="preconnect" href="<%= process.env.VUE_APP_PXIMG_PROXY %>" crossorigin />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/lxgw-wenkai-webfont/1.6.0/style.css">
+    <!-- <link rel="preload" href="<%= require('@/assets/fonts/ResourceHanRoundedCN-Light.woff2') %>" as="font" crossorigin />
     <link rel="preload" href="<%= require('@/assets/fonts/ResourceHanRoundedCN-Medium.woff2') %>" as="font" crossorigin />
-    <link rel="preload" href="<%= require('@/assets/fonts/ResourceHanRoundedCN-Regular.woff2') %>" as="font" crossorigin />
+    <link rel="preload" href="<%= require('@/assets/fonts/ResourceHanRoundedCN-Regular.woff2') %>" as="font" crossorigin /> -->
     <script src="<%= BASE_URL %>js/gif.js"></script>
     <title>Pixivel</title>
+    <% if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_UMAMI_SRC) { %>
+    <script async defer src="<%= process.env.VUE_APP_UMAMI_SRC %>" data-website-id="<%= process.env.VUE_APP_UMAMI_ID %>"></script>
+    <% } %>
   </head>
   <body>
     <noscript>

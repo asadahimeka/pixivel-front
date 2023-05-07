@@ -4,7 +4,7 @@
       <section class="hero is-primary banner">
         <div class="hero-body">
           <div class="container has-text-centered">
-            <div class="media">
+            <!-- <div class="media">
               <figure class="media-left">
                 <p class="image is-64x64">
                   <img
@@ -36,30 +36,33 @@
                   isLoggedIn ? "登出" : "登录"
                 }}</b-button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="hero-foot">
           <nav class="tabs">
             <div class="container">
               <ul class="is-justify-content-center link-tabs">
-                <li :class="{ 'link-active': tabNow == 0 }" @click="tabNow = 0">
+                <!-- <li :class="{ 'link-active': tabNow == 0 }" @click="tabNow = 0">
                   <a>主页</a>
-                </li>
+                </li> -->
 
-                <li
+                <!-- <li
                   :class="{ 'link-active': tabNow == 3 }"
                   @click="tabNow = 3"
                   v-if="isLoggedIn"
                 >
                   <a>收藏</a>
-                </li>
-                <li
+                </li> -->
+                <!-- <li
                   :class="{ 'link-active': tabNow == 4 }"
                   @click="tabNow = 4"
                   v-if="isLoggedIn"
                 >
                   <a>关注</a>
+                </li> -->
+                <li :class="{ 'link-active': tabNow == 2 }" @click="tabNow = 2">
+                  <a>设置</a>
                 </li>
                 <li :class="{ 'link-active': tabNow == 5 }" @click="tabNow = 5">
                   <a>历史记录</a>
@@ -68,12 +71,9 @@
                 <li :class="{ 'link-active': tabNow == 1 }" @click="tabNow = 1">
                   <a>下载</a>
                 </li>
-                <li :class="{ 'link-active': tabNow == 2 }" @click="tabNow = 2">
-                  <a>设置</a>
-                </li>
-                <li :class="{ 'link-active': tabNow == 6 }" @click="tabNow = 6">
+                <!-- <li :class="{ 'link-active': tabNow == 6 }" @click="tabNow = 6">
                   <a>本站服务</a>
-                </li>
+                </li> -->
                 <li :class="{ 'link-active': tabNow == 7 }" @click="tabNow = 7">
                   <a>友情链接</a>
                 </li>
@@ -140,14 +140,6 @@
         <br />
         <div class="columns set-list">
           <div class="column is-one-third-desktop is-full-mobile">
-            <b-field label="下载文件名格式">
-              <b-input
-                :value="getdownloadfilename"
-                @blur="setdownloadfilename"
-              ></b-input>
-            </b-field>
-          </div>
-          <div class="column is-one-third-desktop is-full-mobile">
             <b-field label="首页推荐敏感度过滤">
               <b-numberinput
                 :controls="false"
@@ -169,8 +161,6 @@
               ></b-numberinput>
             </b-field>
           </div>
-        </div>
-        <div class="columns set-list">
           <div class="column is-one-third-desktop is-full-mobile">
             <b-field label="推荐热门度筛选">
               <b-numberinput
@@ -180,6 +170,33 @@
                 :max="400000"
                 @blur="setrecommendquality"
               ></b-numberinput>
+            </b-field>
+          </div>
+        </div>
+        <div class="columns set-list">
+          <div class="column is-one-third-desktop is-full-mobile">
+            <b-field label="R-18 作品显示">
+              <b-switch v-model="xSetting.r18"></b-switch>
+            </b-field>
+          </div>
+          <div class="column is-one-third-desktop is-full-mobile">
+            <b-field label="R-18G 作品显示">
+              <b-switch v-model="xSetting.r18g"></b-switch>
+            </b-field>
+          </div>
+          <div class="column is-one-third-desktop is-full-mobile">
+            <b-field label="AI 作品显示">
+              <b-switch v-model="xSetting.ai"></b-switch>
+            </b-field>
+          </div>
+        </div>
+        <div class="columns set-list">
+          <div class="column is-one-third-desktop is-full-mobile">
+            <b-field label="下载文件名格式">
+              <b-input
+                :value="getdownloadfilename"
+                @blur="setdownloadfilename"
+              ></b-input>
             </b-field>
           </div>
         </div>
@@ -218,6 +235,7 @@
         </div>
       </section>
       <section v-if="tabNow == 7">
+        <p style="margin-bottom: 1rem">原作</p>
         <div class="columns set-list">
           <div
             class="column is-one-third-desktop is-half-tablet hover-up"
@@ -235,6 +253,27 @@
                   <p>
                     {{ link.desc }}
                   </p>
+                </div>
+              </div>
+            </b-notification>
+          </div>
+        </div>
+        <p style="margin-bottom: 1rem">修改</p>
+        <div class="columns set-list">
+          <div
+            class="column is-one-third-desktop is-half-tablet hover-up"
+            @click="jump('https://nanoka.top')"
+          >
+            <b-notification :closable="false" class="is-clickable">
+              <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
+                <figure class="image is-64x64 media-left">
+                  <img
+                    class="is-rounded"
+                    src="https://pic.rmb.bdstatic.com/bjh/events/454bd0e4cacb10335a917f45282c3ec35827.jpeg"
+                  />
+                </figure>
+                <div class="content">
+                  <strong>Sakura Yumine</strong>
                 </div>
               </div>
             </b-notification>
@@ -259,7 +298,7 @@
 <script>
 import { deleteToken, getUserInfo, isLoggedIn } from "@/utils/account";
 import md5 from "@/utils/md5";
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import storage from "store2";
 import Login from "@/components/login";
 import History from "@/components/history";
@@ -267,6 +306,13 @@ import Bookmark from "@/components/bookmark";
 import Follow from "@/components/follow";
 
 const AnnounceKey = "announce";
+
+function saveXSetting(val) {
+  storage.set("P_XSetting", val);
+  setTimeout(() => {
+    location.reload();
+  }, 200);
+}
 
 export default {
   name: "Account",
@@ -278,9 +324,14 @@ export default {
   },
   data() {
     return {
-      tabNow: 0,
+      tabNow: 2,
       showLoginPanel: false,
-      announce: window.JSON.parse(storage.get(AnnounceKey, "{}")),
+      xSetting: storage.get("P_XSetting", {
+        r18: false,
+        r18g: false,
+        ai: false,
+      }),
+      announce: JSON.parse(storage.get(AnnounceKey, "{}")),
       defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
       services: [
         {
@@ -347,6 +398,49 @@ export default {
     $route() {
       if ("#" + this.tabNow.toString() == this.$route.hash) return;
       this.tabNow = parseInt(this.$route.hash.split("#")[1]);
+    },
+    "xSetting.r18"(val) {
+      if (val) {
+        this.$buefy.dialog.confirm({
+          title: "提示",
+          message:
+            "确定要开启 R-18 作品显示吗？请确保您的年龄已满18岁，且未违反当地法律法规所规定的内容。",
+          type: "is-danger",
+          confirmText: "确认",
+          cancelText: "取消",
+          onConfirm: () => {
+            saveXSetting(this.xSetting);
+          },
+          onCancel: () => {
+            location.reload();
+          },
+        });
+      } else {
+        saveXSetting(this.xSetting);
+      }
+    },
+    "xSetting.r18g"(val) {
+      if (val) {
+        this.$buefy.dialog.confirm({
+          title: "提示",
+          message:
+            "确定要开启 R-18G 作品显示吗？请确保您的年龄已满18岁，且未违反当地法律法规所规定的内容。请注意，开启 R-18G 开关可能会对您的身心健康造成不可逆的影响，如若感到不适，请立即关闭应用并寻求医学帮助",
+          type: "is-danger",
+          confirmText: "确认",
+          cancelText: "取消",
+          onConfirm: () => {
+            saveXSetting(this.xSetting);
+          },
+          onCancel: () => {
+            location.reload();
+          },
+        });
+      } else {
+        saveXSetting(this.xSetting);
+      }
+    },
+    "xSetting.ai"() {
+      saveXSetting(this.xSetting);
     },
   },
   created() {

@@ -12,9 +12,12 @@
             :page-count="pageCount"
             @progress="updateImageLoading"
             @forcefetch="triggerForceFetchIllust"
-            v-if="illust"
+            v-if="illust && isIllustShow"
             ref="present"
           />
+          <div v-if="illust && !isIllustShow" class="ill_hide_tip">
+            <p>根据当前设置，此内容不予显示</p>
+          </div>
         </div>
         <div class="column is-one-quarter">
           <div
@@ -22,10 +25,26 @@
           >
             <div>
               <template v-if="illust">
-                <h1 class="title is-2 no-bottom-margin">{{ illust.title }}</h1>
-                <small>{{ illust.altTitle }}</small>
+                <h1 class="title is-2" style="margin-bottom: 0.6rem">
+                  {{ illust.title }}
+                </h1>
+                <!-- <small>{{ illust.altTitle }}</small> -->
                 <template v-if="illust.aiType === 2">
-                  <br /><b-tag type="is-warning"> 此图片由AI生成 </b-tag>
+                  <b-tag
+                    size="is-medium"
+                    type="is-warning"
+                    style="margin-right: 0.5rem"
+                  >
+                    AI生成
+                  </b-tag>
+                </template>
+                <template v-if="illust.xRestrict > 0">
+                  <b-tag
+                    size="is-medium"
+                    style="background-color: #f14668; color: #fff"
+                  >
+                    NSFW
+                  </b-tag>
                 </template>
               </template>
               <template v-else>
@@ -33,8 +52,30 @@
                 <b-skeleton width="40%" height=".875em"></b-skeleton>
               </template>
               <hr />
+            </div>
+            <b-taglist class="little-top-margin" v-if="illust">
+              <template v-for="tag in illust.tags">
+                <b-tag
+                  type="is-info is-light"
+                  class="clickable-tag"
+                  :key="tag.name"
+                  @click.native="searchtag(tag.name)"
+                  >{{ tag.name }}</b-tag
+                >
+                <b-tag
+                  type="is-link is-light"
+                  class="clickable-tag"
+                  v-if="tag.translated_name"
+                  :key="tag.translated_name + Math.random()"
+                  @click.native="searchtag(tag.translated_name)"
+                  >{{ tag.translated_name }}</b-tag
+                >
+              </template>
+            </b-taglist>
+            <div style="margin-bottom: 1.5rem">
               <v-clamp
                 class="subtitle is-6 break-raw-text"
+                style="margin-top: 0.6rem"
                 autoresize
                 :max-lines="5"
                 tag="p"
@@ -59,25 +100,6 @@
                 <b-skeleton width="30%" height="15px"></b-skeleton>
               </template>
             </div>
-            <b-taglist class="little-top-margin" v-if="illust">
-              <template v-for="tag in illust.tags">
-                <b-tag
-                  type="is-info is-light"
-                  class="clickable-tag"
-                  :key="tag.name"
-                  @click.native="searchtag(tag.name)"
-                  >{{ tag.name }}</b-tag
-                >
-                <b-tag
-                  type="is-link is-light"
-                  class="clickable-tag"
-                  v-if="tag.translation"
-                  :key="tag.translation + Math.random()"
-                  @click.native="searchtag(tag.translation)"
-                  >{{ tag.translation }}</b-tag
-                >
-              </template>
-            </b-taglist>
             <RouterA
               class="media is-vertical-centered"
               :to="{ name: 'User', params: { id: illust.user.id } }"
@@ -97,12 +119,12 @@
             </RouterA>
             <HScroll
               :illusts="userIllusts"
-              v-if="illust"
+              v-if="illust && isIllustShow"
               @load="loadUserIllusts"
               :has-load="userIllustsShowLoading"
               ref="userIllusts"
             ></HScroll>
-            <div class="statistic" v-if="illust">
+            <div class="statistic" v-if="illust && isIllustShow">
               <div class="statistic-item">
                 <b-icon pack="uil" icon="uil-eye" size="is-small"></b-icon>
                 {{ illust.statistic.views }}
@@ -129,15 +151,15 @@
             </div>
             <div
               class="notification is-primary img-progress"
-              v-if="illust"
+              v-if="illust && isIllustShow"
               :style="{
                 'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) ${imgprogress}%, rgb(200, 200, 200) ${imgprogress}%, rgb(200, 200, 200) 100%)`,
               }"
             >
               <div class="buttons is-centered">
-                <div class="like-container" v-if="islogin">
+                <!-- <div class="like-container" v-if="islogin">
                   <Like :illust="illust" />
-                </div>
+                </div> -->
                 <b-button type="is-primary" inverted @click="saveDirect">{{
                   imgprogress == 100 ? "保存" : parseInt(imgprogress) + "%"
                 }}</b-button>
@@ -149,14 +171,26 @@
                   @click="saveDirectAll"
                   >保存所有</b-button
                 >
-                <ShareButton :type="0" :id="illust.id" :info="illust.title" />
+                <b-button type="is-primary" inverted outlined>
+                  <a
+                    :href="`https://www.pixiv.net/artworks/${illust.id}`"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="color: inherit; text-decoration: none"
+                    >在 Pixiv 上查看</a
+                  >
+                </b-button>
+                <!-- <ShareButton :type="0" :id="illust.id" :info="illust.title" /> -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="container huge-top-margin" v-if="illust">
+    <div
+      class="container huge-top-margin"
+      v-if="illust && illust.aiType < 2 && illust.xRestrict < 1"
+    >
       <WaterFall
         :illusts="recommendIllusts"
         :identifier="recommendIllustsIdentifier"
@@ -183,16 +217,18 @@
 </template>
 
 <script>
+import Lodash from "lodash";
 import Presentation from "@/components/presentation.vue";
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import VClamp from "vue-clamp";
 import WaterFall from "@/components/waterfall";
 import HScroll from "@/components/horizontal_scroll";
 import RouterA from "@/components/router_a";
-import Like from "@/components/like_heart";
+// import Like from "@/components/like_heart";
 import { addHistory } from "@/utils/history";
 import { isLoggedIn } from "@/utils/account";
-import ShareButton from "@/components/share_button";
+// import ShareButton from "@/components/share_button";
+import { adaptIllust, adaptIllusts, isItemShow } from "@/utils/adapter";
 
 export default {
   name: "Detail",
@@ -202,8 +238,8 @@ export default {
     WaterFall,
     HScroll,
     RouterA,
-    Like,
-    ShareButton,
+    // Like,
+    // ShareButton,
   },
   data: () => ({
     id: 0,
@@ -287,42 +323,34 @@ export default {
         type: "is-danger",
       });
     },
-    loadUgoira(force) {
-      let params = {};
-      if (force) params["forcefetch"] = "true";
+    loadUgoira() {
       this.axios
-        .get(CONFIG.API_HOST + `ugoira/${this.id}`, {
-          params: params,
-        })
+        .get(CONFIG.API_HOST + `ugoira_metadata?id=${this.id}`)
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             return;
           }
-          this.ugoiraFrames = response.data.data.frames;
+          this.ugoiraFrames = response.data.ugoira_metadata.frames;
           this.loading.close();
         })
         .catch((error) => {
           console.error(error);
-          this.error(error.response.data.message);
+          this.error(error.message);
           this.loading.close();
         });
     },
     load(force) {
       this.loading = this.$buefy.loading.open();
-      let params = {};
-      if (force) params["forcefetch"] = "true";
       this.axios
-        .get(CONFIG.API_HOST + `illust/${this.id}`, {
-          params: params,
-        })
+        .get(CONFIG.API_HOST + `illust?id=${this.id}`)
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             this.loading.close();
             return;
           }
-          this.illust = response.data.data;
+          this.illust = adaptIllust(response.data.illust);
           if (this.illust.type == 2) {
             this.loadUgoira(force);
           } else {
@@ -331,7 +359,7 @@ export default {
         })
         .catch((error) => {
           console.error(error);
-          this.error(error.response.data.message);
+          this.error(error.message);
           this.loading.close();
         });
     },
@@ -359,28 +387,29 @@ export default {
       }
 
       this.axios
-        .get(CONFIG.API_HOST + `user/${this.illust.user.id}/illusts`, {
+        .get(CONFIG.API_HOST + `member_illust?id=${this.illust.user.id}`, {
           params: {
-            page: this.userIllustsPage,
+            page: this.userIllustsPage + 1,
           },
         })
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             return;
           }
-          if (!response.data.data.has_next) {
-            this.userIllustsShowLoading = false;
-          }
-          this.userIllusts = this.userIllusts.concat(
-            response.data.data.illusts
+          // if (!response.data.next_url) {
+          this.userIllustsShowLoading = false;
+          // }
+          this.userIllusts = this.Lodash.uniqBy(
+            this.userIllusts.concat(adaptIllusts(response.data.illusts)),
+            "id"
           );
           if (this.userIllustsPage == 0) {
             this.$nextTick(() => {
               this.findIllustUserPos();
             });
           }
-          this.userIllustsPage += 1;
+          // this.userIllustsPage += 1;
           this.userIllustsLoading = false;
           this.$store.commit("Cache/cacheState", {
             key: {
@@ -396,7 +425,7 @@ export default {
         })
         .catch((error) => {
           this.userIllustsLoading = false;
-          this.error(error.response.data.message);
+          this.error(error.message);
         });
     },
     refreshRecommend() {
@@ -405,9 +434,10 @@ export default {
       this.recommendIllustsIdentifier += 1;
     },
     findIllustUserPos() {
+      if (!this.isIllustShow) return;
       let sanity = this.$store.getters["Settings/get"]("global.sanity_filter");
       let userIllusts = this.userIllusts.filter((item) => {
-        return item.sanity < sanity;
+        return isItemShow(item) && item.sanity < sanity;
       });
       let targetIndex = this.Lodash.findIndex(userIllusts, (item) => {
         return item.id == this.id;
@@ -433,32 +463,31 @@ export default {
         this.recommendIllusts = cachedRecommendIllusts["illusts"];
       }
     },
-    recommendIllustsPageNext($state) {
+    recommendIllustsPageNext: Lodash.throttle(function ($state) {
       this.axios
-        .get(CONFIG.API_HOST + `illust/${this.id}/recommend`, {
+        .get(CONFIG.API_HOST + `related?id=${this.id}`, {
           params: {
-            page: this.recommendIllustsPage,
+            page: this.recommendIllustsPage + 1,
           },
         })
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
+            this.error(response.data.error.user_message);
             $state.error();
             return;
           }
-          if (!response.data.data.has_next) {
+          if (this.recommendIllustsPage > 0) {
             $state.complete();
           }
           let quality =
             this.$store.getters["Settings/get"]("recommend.quality");
-          this.recommendIllusts = this.recommendIllusts.concat(
-            response.data.data.illusts.filter((item) => {
-              return (
-                (item.statistic.bookmarks * 70 + item.statistic.likes * 30) /
-                  100 >=
-                quality
-              );
-            })
+          this.recommendIllusts = this.Lodash.uniqBy(
+            this.recommendIllusts.concat(
+              adaptIllusts(response.data.illusts).filter((item) => {
+                return item.statistic.bookmarks >= quality;
+              })
+            ),
+            "id"
           );
           this.recommendIllustsPage += 1;
           $state.loaded();
@@ -474,10 +503,10 @@ export default {
           });
         })
         .catch((error) => {
-          this.error(error.response.data.message);
+          this.error(error.message);
           $state.error();
         });
-    },
+    }, 1500),
     searchtag(name) {
       this.$router.push({
         name: "Search",
@@ -552,11 +581,21 @@ export default {
       }
       return this.illust.pageCount;
     },
+    isIllustShow() {
+      return isItemShow(this.illust);
+    },
   },
 };
 </script>
 
 <style lang="scss">
+.ill_hide_tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .expand-tag-button {
   height: 1.25rem !important;
 

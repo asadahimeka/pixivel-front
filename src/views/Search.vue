@@ -11,9 +11,26 @@
                 icon-right="uil uil-angle-down"
               />
             </template>
-            <b-dropdown-item value="illust"> 关键字搜索插画 </b-dropdown-item>
-            <b-dropdown-item value="tag"> 标签搜索插画 </b-dropdown-item>
-            <b-dropdown-item value="user"> 搜索作者 </b-dropdown-item>
+            <b-dropdown-item value="illust"> 插画 </b-dropdown-item>
+            <!-- <b-dropdown-item value="tag"> 标签搜索插画 </b-dropdown-item> -->
+            <b-dropdown-item value="user"> 作者 </b-dropdown-item>
+          </b-dropdown>
+        </p>
+        <p v-if="mode != 'user'" class="control">
+          <b-dropdown v-model="usersIriTag">
+            <template #trigger>
+              <b-button
+                :label="usersIriTag || 'users入り'"
+                icon-right="uil uil-angle-down"
+              />
+            </template>
+            <b-dropdown-item
+              v-for="t in usersIriTags"
+              :key="t.text"
+              :value="t.value"
+            >
+              {{ t.text }}
+            </b-dropdown-item>
           </b-dropdown>
         </p>
         <b-taginput
@@ -47,7 +64,7 @@
           <b-button class="button is-info" @click="search()">搜索</b-button>
         </p>
       </b-field>
-      <b-field v-if="mode == 'illust' || mode == 'tag'">
+      <!-- <b-field v-if="mode == 'illust' || mode == 'tag'">
         <b-checkbox-button
           v-model="queryFeatures"
           native-value="sortpop"
@@ -70,7 +87,7 @@
           <b-icon pack="uil" icon="uil-clock" size="is-small"></b-icon>
           <span>时间排序</span>
         </b-checkbox-button>
-      </b-field>
+      </b-field> -->
     </div>
     <section v-if="finalKeyword">
       <div class="container">
@@ -110,9 +127,11 @@
 </template>
 
 <script>
-import CONFIG from "@/config.json";
+import Lodash from "lodash";
+import CONFIG from "@/config";
 import WaterFall from "@/components/waterfall";
 import UserList from "@/components/user_list";
+import { adaptIllusts, adaptSampleUser, xSetting } from "@/utils/adapter";
 
 export default {
   name: "Search",
@@ -135,6 +154,19 @@ export default {
       usersLoad: true,
       loadid: +new Date(),
       queryFeatures: [],
+      usersIriTag: "",
+      usersIriTags: [
+        { text: "users入り", value: "" },
+        { text: "30000users入り", value: "30000users入り" },
+        { text: "20000users入り", value: "20000users入り" },
+        { text: "10000users入り", value: "10000users入り" },
+        { text: "7500users入り", value: "7500users入り" },
+        { text: "5000users入り", value: "5000users入り" },
+        { text: "1000users入り", value: "1000users入り" },
+        { text: "500users入り", value: "500users入り" },
+        { text: "250users入り", value: "250users入り" },
+        { text: "100users入り", value: "100users入り" },
+      ],
     };
   },
   watch: {
@@ -145,27 +177,34 @@ export default {
     finalKeyword() {
       this.refresh(false);
     },
+    usersIriTag() {
+      this.refresh(false);
+    },
     mode() {
       this.refresh(true);
-      this.$router.push({
-        name: "Search",
-        query: {
-          keyword: this.keyword,
-          mode: this.mode,
-          features: this.queryFeatures?.join(","),
-        },
-      });
+      this.$router
+        .push({
+          name: "Search",
+          query: {
+            keyword: this.keyword,
+            mode: this.mode,
+            features: this.queryFeatures?.join(","),
+          },
+        })
+        .catch(() => {});
     },
     queryFeatures() {
       this.refresh(false);
-      this.$router.push({
-        name: "Search",
-        query: {
-          keyword: this.keyword,
-          mode: this.mode,
-          features: this.queryFeatures.filter((n) => n).join(","),
-        },
-      });
+      this.$router
+        .push({
+          name: "Search",
+          query: {
+            keyword: this.keyword,
+            mode: this.mode,
+            features: this.queryFeatures.filter((n) => n).join(","),
+          },
+        })
+        .catch(() => {});
     },
     $route() {
       this.keyword = this.$route.query.keyword;
@@ -192,8 +231,10 @@ export default {
   mounted() {
     if (this.finalKeyword) {
       setTimeout(() => {
-        this.$refs.infload.$emit("$InfiniteLoading:reset");
-        this.$refs.infload.attemptLoad();
+        if (this.$refs.infload) {
+          this.$refs.infload.$emit("$InfiniteLoading:reset");
+          this.$refs.infload.attemptLoad();
+        }
       }, 1500);
     }
   },
@@ -215,164 +256,175 @@ export default {
     },
     searchonselect(keywd) {
       if (keywd) {
-        this.$router.push({
-          name: "Search",
-          query: {
-            keyword: keywd,
-            mode: this.mode,
-            features: this.queryFeatures?.join(","),
-          },
-        });
+        this.$router
+          .push({
+            name: "Search",
+            query: {
+              keyword: keywd,
+              mode: this.mode,
+              features: this.queryFeatures?.join(","),
+            },
+          })
+          .catch(() => {});
       }
     },
     search() {
       if (this.keyword != this.$route.query.keyword) {
-        this.$router.push({
-          name: "Search",
-          query: {
-            keyword: this.keyword,
-            mode: this.mode,
-            features: this.queryFeatures.join(","),
-          },
-        });
+        this.$router
+          .push({
+            name: "Search",
+            query: {
+              keyword: this.keyword,
+              mode: this.mode,
+              features: this.queryFeatures.join(","),
+            },
+          })
+          .catch(() => {});
       }
     },
     suggest() {
       if (this.mode == "illust") {
         this.axios
-          .get(CONFIG.API_HOST + `illust/search/${this.keyword}/suggest`)
+          .get(CONFIG.API_HOST + `search_autocomplete?word=${this.keyword}`)
           .then((response) => {
             if (response.data.error) {
-              this.error(response.data.message);
+              this.error(response.data.error.user_message);
               return;
             }
-            this.suggestList = response.data.data.suggest_words;
+            this.suggestList = response.data.tags.map((e) => e.name);
           })
           .catch((error) => {
             this.error(error.message);
           });
       } else if (this.mode == "tag") {
         this.axios
-          .get(CONFIG.API_HOST + `tag/search/${this.keyword}/suggest`)
+          .get(CONFIG.API_HOST + `search_autocomplete?word=${this.keyword}`)
           .then((response) => {
             if (response.data.error) {
-              this.error(response.data.message);
+              this.error(response.data.error.user_message);
               return;
             }
-            this.suggestList = response.data.data.suggest_words;
+            this.suggestList = response.data.tags.map((e) => e.name);
           })
           .catch((error) => {
             this.error(error.message);
           });
       } else if (this.mode == "user") {
-        this.axios
-          .get(CONFIG.API_HOST + `user/search/${this.keyword}/suggest`)
-          .then((response) => {
-            if (response.data.error) {
-              this.error(response.data.message);
-              return;
-            }
-            this.suggestList = response.data.data.suggest_words;
-          })
-          .catch((error) => {
-            this.error(error.message);
-          });
+        this.suggestList = [];
+        // this.axios
+        //   .get(CONFIG.API_HOST + `user/search/${this.keyword}/suggest`)
+        //   .then((response) => {
+        //     if (response.data.error) {
+        //       this.error(response.data.message);
+        //       return;
+        //     }
+        //     this.suggestList = response.data.data.suggest_words;
+        //   })
+        //   .catch((error) => {
+        //     this.error(error.message);
+        //   });
       }
     },
-    illustsPageNext($state) {
-      if (this.mode == "illust") {
-        let params = {
-          page: this.illustsPage,
-          sortpop: this.queryFeatures.includes("sortpop"),
-          sortdate: this.queryFeatures.includes("sortdate"),
-        };
-        let keyword = this.finalKeyword;
-        this.axios
-          .get(CONFIG.API_HOST + `illust/search/${keyword}`, {
-            params,
-          })
-          .then((response) => {
-            if (response.data.error) {
-              this.error(response.data.message);
-              $state.error();
-              return;
-            }
-            if (!response.data.data.has_next) {
-              $state.complete();
-            }
-            this.illusts = this.illusts.concat(
-              response.data.data.illusts.map((illust, i) => {
-                if (response.data.data.highlight[i] != null)
-                  illust["title"] = response.data.data.highlight[i];
-                return illust;
-              })
-            );
-            this.illustsPage += 1;
-            $state.loaded();
-          })
-          .catch((error) => {
-            this.error(error.message);
-          });
-      } else if (this.mode == "tag") {
-        let params = {
-          page: this.illustsPage,
-          sortpop: this.queryFeatures.includes("sortpop"),
-          sortdate: this.queryFeatures.includes("sortdate"),
-        };
-        let keyword = this.finalKeyword;
-        this.axios
-          .get(CONFIG.API_HOST + `tag/search/${keyword}`, {
-            params,
-          })
-          .then((response) => {
-            if (response.data.error) {
-              this.error(response.data.message);
-              $state.error();
-              return;
-            }
-            if (!response.data.data.has_next) {
-              $state.complete();
-            }
-            this.illusts = this.illusts.concat(response.data.data.illusts);
-            this.illustsPage += 1;
-            $state.loaded();
-          })
-          .catch((error) => {
-            this.error(error.message);
-          });
-      }
-    },
-    usersPageNext() {
-      let params = {
-        page: this.illustsPage,
-      };
+    illustsPageNext: Lodash.throttle(function ($state) {
+      // if (this.mode == "illust") {
       let keyword = this.finalKeyword;
+      if (this.usersIriTag) keyword += " " + this.usersIriTag;
+      if (!(xSetting.r18 || xSetting.r18g)) keyword += " -R-18 -R18 -18+";
+      if (!xSetting.ai) keyword += " -AI";
+
+      let params = {
+        word: keyword,
+        page: this.illustsPage + 1,
+        // sortpop: this.queryFeatures.includes("sortpop"),
+        // sortdate: this.queryFeatures.includes("sortdate"),
+      };
       this.axios
-        .get(CONFIG.API_HOST + `user/search/${keyword}`, {
+        .get(CONFIG.API_HOST + `search`, {
           params,
         })
         .then((response) => {
           if (response.data.error) {
-            this.error(response.data.message);
-            this.usersLoad = false;
+            this.error(response.data.error.user_message);
+            $state.error();
             return;
           }
-          if (!response.data.data.has_next) {
-            this.usersLoad = false;
+          if (this.illustsPage > 8 || !response.data.next_url) {
+            $state.complete();
           }
-          this.users = this.illusts.concat(
-            response.data.data.users.map((user, i) => {
-              if (response.data.data.highlight[i] != null)
-                user["title"] = response.data.data.highlight[i];
-              return user;
-            })
+          let { illusts } = response.data;
+          if (this.usersIriTag) {
+            illusts = illusts.filter((e) => {
+              return e.total_bookmarks > parseInt(this.usersIriTag);
+            });
+          }
+          this.illusts = this.Lodash.uniqBy(
+            this.illusts.concat(adaptIllusts(illusts)),
+            "id"
           );
           this.illustsPage += 1;
+          $state.loaded();
         })
         .catch((error) => {
           this.error(error.message);
         });
-    },
+      // } else if (this.mode == "tag") {
+      //   let params = {
+      //     page: this.illustsPage,
+      //     sortpop: this.queryFeatures.includes("sortpop"),
+      //     sortdate: this.queryFeatures.includes("sortdate"),
+      //   };
+      //   let keyword = this.finalKeyword;
+      //   this.axios
+      //     .get(CONFIG.API_HOST + `tag/search/${keyword}`, {
+      //       params,
+      //     })
+      //     .then((response) => {
+      //       if (response.data.error) {
+      //         this.error(response.data.message);
+      //         $state.error();
+      //         return;
+      //       }
+      //       if (!response.data.data.has_next) {
+      //         $state.complete();
+      //       }
+      //       this.illusts = this.illusts.concat(response.data.data.illusts);
+      //       this.illustsPage += 1;
+      //       $state.loaded();
+      //     })
+      //     .catch((error) => {
+      //       this.error(error.message);
+      //     });
+      // }
+    }, 1500),
+    usersPageNext: Lodash.throttle(function () {
+      let params = {
+        page: this.illustsPage + 1,
+      };
+      let keyword = this.finalKeyword;
+      this.axios
+        .get(CONFIG.API_HOST + `search_user?word=${keyword}`, {
+          params,
+        })
+        .then((response) => {
+          if (response.data.error) {
+            this.error(response.data.error.user_message);
+            this.usersLoad = false;
+            return;
+          }
+          if (this.illustsPage > 5 || !response.data.next_url) {
+            this.usersLoad = false;
+          }
+          this.users = this.Lodash.uniqBy(
+            this.users.concat(response.data.user_previews.map(adaptSampleUser)),
+            "id"
+          );
+          this.illustsPage += 1;
+        })
+        .catch((error) => {
+          console.error("error: ", error);
+          this.error(error.message);
+        });
+    }, 1500),
     error(message) {
       this.$buefy.notification.open({
         duration: 5000,

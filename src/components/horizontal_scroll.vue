@@ -32,6 +32,7 @@
 <script>
 import LazyImg from "@/components/lazyimg";
 import RouterA from "@/components/router_a";
+import { isItemShow } from "@/utils/adapter";
 
 export default {
   name: "HScroll",
@@ -81,7 +82,7 @@ export default {
     illustsFiltered() {
       let sanity = this.$store.getters["Settings/get"]("global.sanity_filter");
       return this.illusts.filter((item) => {
-        return item.sanity < sanity;
+        return isItemShow(item) && item.sanity < sanity;
       });
     },
   },

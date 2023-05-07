@@ -1,6 +1,6 @@
 import storage from "store2";
 import axios from "axios";
-import CONFIG from "@/config.json";
+import CONFIG from "@/config";
 import qs from "qs";
 import moment from "moment";
 import db from "./idb";
