@@ -235,7 +235,7 @@
         </div>
       </section>
       <section v-if="tabNow == 7">
-        <p style="margin-bottom: 1rem">原作</p>
+        <p style="margin: 1rem">原作</p>
         <div class="columns set-list">
           <div
             class="column is-one-third-desktop is-half-tablet hover-up"
@@ -258,7 +258,7 @@
             </b-notification>
           </div>
         </div>
-        <p style="margin-bottom: 1rem">修改</p>
+        <p style="margin: 1rem">修改</p>
         <div class="columns set-list">
           <div
             class="column is-one-third-desktop is-half-tablet hover-up"

@@ -129,14 +129,14 @@
                 <b-icon pack="uil" icon="uil-eye" size="is-small"></b-icon>
                 {{ illust.statistic.views }}
               </div>
-              <div class="statistic-item">
+              <!-- <div class="statistic-item">
                 <b-icon
                   pack="uil"
                   icon="uil-thumbs-up"
                   size="is-small"
                 ></b-icon>
                 {{ illust.statistic.likes }}
-              </div>
+              </div> -->
               <div class="statistic-item">
                 <b-icon pack="uil" icon="uil-heart" size="is-small"></b-icon>
                 {{ illust.statistic.bookmarks }}

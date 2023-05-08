@@ -75,7 +75,7 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: "#00cea8",
     iconPaths: {
       maskicon: null,
-      favicon32: "img/icons/icon-48x48.png.png",
+      favicon32: "img/icons/icon-48x48.png",
       favicon16: "favicon.ico",
       appleTouchIcon: null,
       msTileImage: null,
@@ -89,35 +89,43 @@ module.exports = {
       importsDirectory: "js",
       runtimeCaching: [
         {
-          urlPattern: /^https:\/\/pixivel\.moe(\/.*\.(html|js|css))?$/,
-          handler: "NetworkFirst",
+          urlPattern: /^https:\/\/.*\.kanata\.ml\/?$/,
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: "index-cache",
+            cacheableResponse: { statuses: [200] },
+          },
+        },
+        {
+          urlPattern: /.*\.html$/,
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: "html-files",
+            cacheableResponse: { statuses: [0, 200] },
+          },
+        },
+        {
+          urlPattern: /.*\.(css|js)$/,
+          handler: "CacheFirst",
           options: {
             cacheName: "static-files",
             cacheableResponse: {
               statuses: [0, 200],
             },
-            expiration: {
-              maxAgeSeconds: 86400 * 7,
-            },
-            networkTimeoutSeconds: 10,
           },
         },
         {
-          urlPattern:
-            /^https:\/\/pixivel\.moe(\/.*\.(jpg|jpeg|png|webp|svg))?$/,
+          urlPattern: /.*\.(png|gif|jpg|jpeg|ico|svg|cur|mp4|woff2?)$/,
           handler: "CacheFirst",
           options: {
             cacheName: "static-imgs",
             cacheableResponse: {
               statuses: [0, 200],
             },
-            expiration: {
-              maxAgeSeconds: 86400 * 3,
-            },
           },
         },
         {
-          urlPattern: /^https:\/\/api\.pixivel\.moe/,
+          urlPattern: /^https:\/\/hibi.*\.cocomi\.cf/,
           handler: "CacheFirst",
           options: {
             cacheName: "api",
@@ -127,25 +135,6 @@ module.exports = {
             expiration: {
               maxAgeSeconds: 86400 * 1,
               maxEntries: 30000,
-            },
-          },
-        },
-        {
-          urlPattern:
-            /^https:\/\/proxy(-((jp1)|(jp2)|(jp3)))?\.pixivel\.moe\/.*$/,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "pics",
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-            expiration: {
-              maxAgeSeconds: 86400 * 30,
-              maxEntries: 1000,
-            },
-            fetchOptions: {
-              credentials: "omit",
-              mode: "cors",
             },
           },
         },

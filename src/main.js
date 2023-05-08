@@ -1,5 +1,4 @@
 import "buefy/dist/buefy.css";
-import "@/assets/fonts/font.scss";
 import "@/assets/css/bulmaswatch.min.css";
 import "@/assets/sass/dark.sass";
 import "@iconscout/unicons/css/line.css";

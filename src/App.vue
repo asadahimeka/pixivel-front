@@ -129,8 +129,6 @@ body {
   padding: 0;
   margin: 0;
   color: #111;
-
-  // font-family: "ResourceHanRoundedCN Regular", "ResourceHanRoundedCN Light" !important;
 }
 
 body,
@@ -151,15 +149,6 @@ textarea {
     background-color: #fdfdfd;
   }
 }
-
-// h1,
-// h2,
-// h3,
-// h4,
-// h5,
-// h6 {
-//   font-family: "ResourceHanRoundedCN Medium" !important;
-// }
 
 .no-margin-bottom {
   margin-bottom: 0 !important;
