@@ -257,9 +257,11 @@ export default {
             "sample.sanity_filter"
           );
           this.sampleIllusts = this.sampleIllusts.concat(
-            adaptIllusts(response.data.illusts).filter((item) => {
-              return item.sanity < sanity;
-            })
+            this.Lodash.shuffle(
+              adaptIllusts(response.data.illusts).filter((item) => {
+                return item.sanity < sanity;
+              })
+            )
           );
           // if (this.sampleIllustsPage >= 20) {
           //   $state.complete();
@@ -288,7 +290,9 @@ export default {
             return;
           }
           this.sampleUsers = this.sampleUsers.concat(
-            response.data.user_previews.map(adaptSampleUser)
+            this.Lodash.shuffle(
+              response.data.user_previews.map(adaptSampleUser)
+            )
           );
           this.sampleUsersLoadFlag = false;
           // if (this.sampleIllustsPage >= 20) {
