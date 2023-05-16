@@ -239,6 +239,25 @@
         <div class="columns set-list">
           <div
             class="column is-one-third-desktop is-half-tablet hover-up"
+            @click="jump('https://github.com/ShugetsuSoft/pixivel-front')"
+          >
+            <b-notification :closable="false" class="is-clickable">
+              <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
+                <figure class="image is-64x64 media-left">
+                  <img
+                    class="is-rounded"
+                    src="https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png"
+                  />
+                </figure>
+                <div class="content">
+                  <strong>pixivel-front</strong>
+                  <p>ShugetsuSoft/pixivel-front</p>
+                </div>
+              </div>
+            </b-notification>
+          </div>
+          <div
+            class="column is-one-third-desktop is-half-tablet hover-up"
             @click="jump(link.link)"
             v-for="link in links"
             :key="link.name"
@@ -274,6 +293,7 @@
                 </figure>
                 <div class="content">
                   <strong>Sakura Yumine</strong>
+                  <p>なし。</p>
                 </div>
               </div>
             </b-notification>
@@ -366,24 +386,24 @@ export default {
           desc: "运维，已经变成蓝毛萌妹力（大雾）",
           link: "https://elfile4138.moe",
         },
-        {
-          name: "墨影",
-          ava: "https://doc.kmf.com/ke-feedback/2022/09/01/15/47/25/20220901154722.png",
-          desc: "管理，NekoNya 编辑，可食用猪猪",
-          link: "https://space.bilibili.com/36999062/",
-        },
-        {
-          name: "Project Shugetsu",
-          ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
-          desc: "秋月计划。The forseeable future.",
-          link: "https://shugetsu.org/",
-        },
-        {
-          name: "Shugetsu Soft",
-          ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
-          desc: "秋月的软件部！Where no magic happens.",
-          link: "https://shugetsu.dev/",
-        },
+        // {
+        //   name: "墨影",
+        //   ava: "https://doc.kmf.com/ke-feedback/2022/09/01/15/47/25/20220901154722.png",
+        //   desc: "管理，NekoNya 编辑，可食用猪猪",
+        //   link: "https://space.bilibili.com/36999062/",
+        // },
+        // {
+        //   name: "Project Shugetsu",
+        //   ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
+        //   desc: "秋月计划。The forseeable future.",
+        //   link: "https://shugetsu.org/",
+        // },
+        // {
+        //   name: "Shugetsu Soft",
+        //   ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
+        //   desc: "秋月的软件部！Where no magic happens.",
+        //   link: "https://shugetsu.dev/",
+        // },
       ],
     };
   },
@@ -555,7 +575,7 @@ export default {
     }
     .link-active {
       background-color: #fff;
-      color: #009e86;
+      color: #E87A90;
     }
   }
 }

@@ -6,7 +6,7 @@
           <img src="../assets/images/favicon.png" />
         </b-navbar-item>
         <div class="title-container">
-          <h3 class="title is-3">Pixivel Front</h3>
+          <h3 class="title is-3">Pxelk</h3>
         </div>
       </template>
       <template #end>
@@ -84,7 +84,7 @@
         class="background"
         :style="{ 'background-image': `url(${backgroundImg})` }"
       ></div>
-      <img class="logo" src="../assets/images/logo.svg" />
+      <img class="logo" src="../assets/images/logo_text.png" />
     </div>
     <div class="container landing-info">
       <div class="columns">
@@ -395,13 +395,12 @@ export default {
 .full-screen {
   .logo {
     position: absolute;
-    margin-bottom: -19rem;
-    bottom: 25%;
-    left: 0;
-    right: 0;
+    top: 50%;
+    left: 50%;
     z-index: 10;
-    width: 100%;
-    height: 38rem;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: auto;
     object-position: center;
     @media screen and (max-width: 975px) {
       object-fit: contain;
@@ -477,6 +476,7 @@ export default {
   background: transparent;
   img {
     margin-left: 7px;
+    max-height: 3rem;
   }
   input {
     box-shadow: none !important;

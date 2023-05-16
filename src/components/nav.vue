@@ -7,7 +7,7 @@
       <b-icon pack="uil" icon="uil-search"></b-icon>
     </div>
     <div class="nav-circle nav-center" @click="routerChange('Landing')">
-      <img class="icon" src="../assets/images/favicon.png" />
+      <img class="icon" src="../assets/images/logo.png" />
     </div>
     <div class="nav-circle" @click="routerChange('Account')">
       <b-icon pack="uil" icon="uil-user"></b-icon>

@@ -2,9 +2,10 @@
   <footer class="footer">
     <div class="content has-text-centered">
       <p>
-        <strong>&copy; Pixivel</strong> by
-        <a href="https://shugetsu.dev/" target="_blank">Shugetsu Soft</a>. Not
-        affiliated with pixiv Inc.
+        <strong>&copy; Pxelk</strong> ported from
+        <a href="https://github.com/ShugetsuSoft/pixivel-front" target="_blank"
+          >Pixivel</a
+        >. Not affiliated with pixiv Inc.
         <!-- <br />
         <a href="https://policy.shugetsu.dev/terms.html" target="_blank"
           >Terms</a

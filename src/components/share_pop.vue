@@ -57,9 +57,9 @@ export default {
     shareQzone() {
       let desc = "";
       if (this.type == 0) {
-        desc += "分享自 Pixivel 的插画：";
+        desc += "分享自 Pxelk 的插画：";
       } else {
-        desc += "分享自 Pixivel 的画师：";
+        desc += "分享自 Pxelk 的画师：";
       }
       desc += this.info;
       let shareUrl = `http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?title=${encodeURIComponent(
@@ -77,9 +77,9 @@ export default {
     shareQQ() {
       let desc = "";
       if (this.type == 0) {
-        desc += "分享自 Pixivel 的插画：";
+        desc += "分享自 Pxelk 的插画：";
       } else {
-        desc += "分享自 Pixivel 的画师：";
+        desc += "分享自 Pxelk 的画师：";
       }
       desc += this.info;
       let shareUrl = `http://connect.qq.com/widget/shareqq/index.html?url=${

@@ -11,13 +11,13 @@ module.exports = {
     },
   }),
   pwa: {
-    name: "Pixivel",
-    themeColor: "#00e2bc",
+    name: "Pxelk",
+    themeColor: "#8F77B5",
     msTileColor: "#000000",
     manifestOptions: {
-      name: "Pixivel",
-      short_name: "Pixivel",
-      theme_color: "#00e2bc",
+      name: "Pxelk",
+      short_name: "Pxelk",
+      theme_color: "#8F77B5",
       background_color: "#fafafa",
       display: "standalone",
       scope: "./",
@@ -60,8 +60,8 @@ module.exports = {
           type: "image/png",
         },
         {
-          src: "img/icons/icon-384x384.png",
-          sizes: "384x384",
+          src: "img/icons/icon-256x256.png",
+          sizes: "256x256",
           type: "image/png",
         },
         {
