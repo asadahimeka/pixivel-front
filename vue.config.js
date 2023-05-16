@@ -115,7 +115,7 @@ module.exports = {
           },
         },
         {
-          urlPattern: /.*\.(png|gif|jpg|jpeg|ico|svg|cur|mp4|woff2?)$/,
+          urlPattern: /.*\.(png|gif|jpg|jpeg?)$/,
           handler: "CacheFirst",
           options: {
             cacheName: "static-imgs",

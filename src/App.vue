@@ -137,7 +137,8 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: "LXGW WenKai", -apple-system, BlinkMacSystemFont, Segoe UI,
+  // "LXGW WenKai",
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
     PingFang SC, Hiragino Sans GB, Source Han Sans SC, Source Han Sans CN,
     Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol !important;
