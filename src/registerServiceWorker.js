@@ -41,13 +41,13 @@ if (
     },
   });
 
-  let refreshing;
-  window.navigator.serviceWorker.addEventListener(
-    "controllerchange",
-    function () {
-      if (refreshing) return;
-      window.location.reload();
-      refreshing = true;
-    }
-  );
+  // let refreshing;
+  // window.navigator.serviceWorker.addEventListener(
+  //   "controllerchange",
+  //   function () {
+  //     if (refreshing) return;
+  //     window.location.reload();
+  //     refreshing = true;
+  //   }
+  // );
 }

@@ -72,7 +72,7 @@ module.exports = {
       ],
     },
     appleMobileWebAppCapable: "yes",
-    appleMobileWebAppStatusBarStyle: "#00cea8",
+    appleMobileWebAppStatusBarStyle: "#8F77B5",
     iconPaths: {
       maskicon: null,
       favicon32: "img/icons/icon-48x48.png",
@@ -94,34 +94,6 @@ module.exports = {
           options: {
             cacheName: "index-cache",
             cacheableResponse: { statuses: [200] },
-          },
-        },
-        {
-          urlPattern: /.*\.html$/,
-          handler: "StaleWhileRevalidate",
-          options: {
-            cacheName: "html-files",
-            cacheableResponse: { statuses: [0, 200] },
-          },
-        },
-        {
-          urlPattern: /.*\.(css|js)$/,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "static-files",
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-          },
-        },
-        {
-          urlPattern: /.*\.(png|gif|jpg|jpeg?)$/,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "static-imgs",
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
           },
         },
         {

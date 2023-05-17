@@ -16,23 +16,6 @@
             <b-dropdown-item value="user"> 作者 </b-dropdown-item>
           </b-dropdown>
         </p>
-        <p v-if="mode != 'user'" class="control">
-          <b-dropdown v-model="usersIriTag">
-            <template #trigger>
-              <b-button
-                :label="usersIriTag || 'users入り'"
-                icon-right="uil uil-angle-down"
-              />
-            </template>
-            <b-dropdown-item
-              v-for="t in usersIriTags"
-              :key="t.text"
-              :value="t.value"
-            >
-              {{ t.text }}
-            </b-dropdown-item>
-          </b-dropdown>
-        </p>
         <b-taginput
           v-model="tags"
           :data="suggestList"
@@ -64,6 +47,23 @@
           <b-button class="button is-info" @click="search()">搜索</b-button>
         </p>
       </b-field>
+      <p v-if="mode != 'user'" class="control">
+        <b-dropdown v-model="usersIriTag">
+          <template #trigger>
+            <b-button
+              :label="usersIriTag || 'users入り'"
+              icon-right="uil uil-angle-down"
+            />
+          </template>
+          <b-dropdown-item
+            v-for="t in usersIriTags"
+            :key="t.text"
+            :value="t.value"
+          >
+            {{ t.text }}
+          </b-dropdown-item>
+        </b-dropdown>
+      </p>
       <!-- <b-field v-if="mode == 'illust' || mode == 'tag'">
         <b-checkbox-button
           v-model="queryFeatures"
