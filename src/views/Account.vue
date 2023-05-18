@@ -380,6 +380,12 @@ export default {
       ],
       mLinks: [
         {
+          name: "pixivel-front",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
+          desc: "asadahimeka/pixivel-front",
+          link: "https://github.com/asadahimeka/pixivel-front",
+        },
+        {
           name: "Sakura Yumine",
           ava: "https://pic.rmb.bdstatic.com/bjh/events/454bd0e4cacb10335a917f45282c3ec35827.jpeg",
           desc: "なし。",
@@ -396,32 +402,32 @@ export default {
         {
           name: "pixiv-viewer feat.asadahimeka",
           ava: "https://pixiv.pics/app-icon.png",
-          desc: "又一个 Pixiv 插画/小说阅览工具",
+          desc: "又一个 Pixiv 插画小说阅览工具",
           link: "https://github.com/asadahimeka/pixiv-viewer",
         },
         {
-          name: "Pixiviz 改 (Cover pwp-app)",
+          name: "Pixiviz (Cover pwp-app)",
           ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
           desc: "An anime illustration sharing site",
           link: "https://github.com/asadahimeka/pixiviz",
         },
         {
-          name: "PixivNow 改 (Cover FreeNow)",
+          name: "PixivNow (Cover FreeNow)",
           ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
           desc: "Pixiv backend proxy & frontend service",
           link: "https://github.com/asadahimeka/PixivNow",
         },
         {
-          name: "pixiv萌え改 (Cover kokororin)",
+          name: "pixiv萌え (Cover kokororin)",
           ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
-          desc: "A pinterest-style layout site, shows illusts on pixiv.net.",
+          desc: "A pinterest-style layout site",
           link: "https://github.com/asadahimeka/pixiv.moe",
         },
         {
           name: "Pixiv Viewer (Cover lxns.org)",
-          ava: "https://lxns.pixiv.pics/assets/logo-2ea1062b.png",
-          desc: "A pinterest-style layout site, shows illusts on pixiv.net.",
-          link: "https://lxns.pixiv.pics",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
+          desc: "A simple illust viewer.",
+          link: "https://github.com/asadahimeka/lxns.pixiv.pics",
         },
         {
           name: "Moeview",
