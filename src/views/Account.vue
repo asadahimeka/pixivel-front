@@ -239,25 +239,6 @@
         <div class="columns set-list">
           <div
             class="column is-one-third-desktop is-half-tablet hover-up"
-            @click="jump('https://github.com/ShugetsuSoft/pixivel-front')"
-          >
-            <b-notification :closable="false" class="is-clickable">
-              <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
-                <figure class="image is-64x64 media-left">
-                  <img
-                    class="is-rounded"
-                    src="https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png"
-                  />
-                </figure>
-                <div class="content">
-                  <strong>pixivel-front</strong>
-                  <p>ShugetsuSoft/pixivel-front</p>
-                </div>
-              </div>
-            </b-notification>
-          </div>
-          <div
-            class="column is-one-third-desktop is-half-tablet hover-up"
             @click="jump(link.link)"
             v-for="link in links"
             :key="link.name"
@@ -280,20 +261,44 @@
         <p style="margin: 1rem">修改</p>
         <div class="columns set-list">
           <div
+            v-for="link in mLinks"
+            :key="link.name"
             class="column is-one-third-desktop is-half-tablet hover-up"
-            @click="jump('https://nanoka.top')"
+            @click="jump(link.link)"
           >
             <b-notification :closable="false" class="is-clickable">
               <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
                 <figure class="image is-64x64 media-left">
-                  <img
-                    class="is-rounded"
-                    src="https://pic.rmb.bdstatic.com/bjh/events/454bd0e4cacb10335a917f45282c3ec35827.jpeg"
-                  />
+                  <img class="is-rounded" :src="link.ava" />
                 </figure>
                 <div class="content">
-                  <strong>Sakura Yumine</strong>
-                  <p>なし。</p>
+                  <strong>{{ link.name }}</strong>
+                  <p>
+                    {{ link.desc }}
+                  </p>
+                </div>
+              </div>
+            </b-notification>
+          </div>
+        </div>
+        <p style="margin: 1rem">Alternatives</p>
+        <div class="columns set-list">
+          <div
+            v-for="link in rLinks"
+            :key="link.name"
+            class="column is-one-third-desktop is-half-tablet hover-up"
+            @click="jump(link.link)"
+          >
+            <b-notification :closable="false" class="is-clickable">
+              <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
+                <figure class="image is-64x64 media-left">
+                  <img class="is-rounded" :src="link.ava" />
+                </figure>
+                <div class="content">
+                  <strong>{{ link.name }}</strong>
+                  <p>
+                    {{ link.desc }}
+                  </p>
                 </div>
               </div>
             </b-notification>
@@ -373,7 +378,71 @@ export default {
           link: "https://nekonya.fun",
         },
       ],
+      mLinks: [
+        {
+          name: "Sakura Yumine",
+          ava: "https://pic.rmb.bdstatic.com/bjh/events/454bd0e4cacb10335a917f45282c3ec35827.jpeg",
+          desc: "なし。",
+          link: "https://www.nanoka.top",
+        },
+        {
+          name: "HibiAPI",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/18/190122060/8621cbfbb207cae2765d6e5a75b668cb_7795090153446833572.png",
+          desc: "一个实现了多种常用站点的易用化API的程序",
+          link: "https://github.com/mixmoe/HibiAPI",
+        },
+      ],
+      rLinks: [
+        {
+          name: "pixiv-viewer feat.asadahimeka",
+          ava: "https://pixiv.pics/app-icon.png",
+          desc: "又一个 Pixiv 插画/小说阅览工具",
+          link: "https://github.com/asadahimeka/pixiv-viewer",
+        },
+        {
+          name: "Pixiviz 改 (Cover pwp-app)",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/18/190122060/8621cbfbb207cae2765d6e5a75b668cb_7795090153446833572.png",
+          desc: "An anime illustration sharing site",
+          link: "https://github.com/asadahimeka/pixiviz",
+        },
+        {
+          name: "PixivNow 改 (Cover FreeNow)",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/18/190122060/8621cbfbb207cae2765d6e5a75b668cb_7795090153446833572.png",
+          desc: "Pixiv backend proxy & frontend service",
+          link: "https://github.com/asadahimeka/PixivNow",
+        },
+        {
+          name: "pixiv萌え改 (Cover kokororin)",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/18/190122060/8621cbfbb207cae2765d6e5a75b668cb_7795090153446833572.png",
+          desc: "A pinterest-style layout site, shows illusts on pixiv.net.",
+          link: "https://github.com/asadahimeka/pixiv.moe",
+        },
+        {
+          name: "Pixiv Viewer (Cover lxns.org)",
+          ava: "https://lxns.pixiv.pics/assets/logo-2ea1062b.png",
+          desc: "A pinterest-style layout site, shows illusts on pixiv.net.",
+          link: "https://lxns.pixiv.pics",
+        },
+        {
+          name: "Moeview",
+          ava: "https://moeview.kanata.ml/logo192.png",
+          desc: "A modern moebooru viewer.",
+          link: "https://moeview.kanata.ml",
+        },
+        {
+          name: "Booru Masonry",
+          ava: "https://booru.kanata.ml/pwa-256x256.png",
+          desc: "Booru sites masonry browsing mode.",
+          link: "https://booru.kanata.ml",
+        },
+      ],
       links: [
+        {
+          name: "pixivel-front",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
+          desc: "ShugetsuSoft/pixivel-front",
+          link: "https://github.com/ShugetsuSoft/pixivel-front",
+        },
         {
           name: "Rorical",
           ava: "https://avatars.githubusercontent.com/u/46294886?v=4",
