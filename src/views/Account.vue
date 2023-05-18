@@ -401,19 +401,19 @@ export default {
         },
         {
           name: "Pixiviz 改 (Cover pwp-app)",
-          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/18/190122060/8621cbfbb207cae2765d6e5a75b668cb_7795090153446833572.png",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
           desc: "An anime illustration sharing site",
           link: "https://github.com/asadahimeka/pixiviz",
         },
         {
           name: "PixivNow 改 (Cover FreeNow)",
-          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/18/190122060/8621cbfbb207cae2765d6e5a75b668cb_7795090153446833572.png",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
           desc: "Pixiv backend proxy & frontend service",
           link: "https://github.com/asadahimeka/PixivNow",
         },
         {
           name: "pixiv萌え改 (Cover kokororin)",
-          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/18/190122060/8621cbfbb207cae2765d6e5a75b668cb_7795090153446833572.png",
+          ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
           desc: "A pinterest-style layout site, shows illusts on pixiv.net.",
           link: "https://github.com/asadahimeka/pixiv.moe",
         },
