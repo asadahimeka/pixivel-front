@@ -4,7 +4,7 @@ module.exports = {
   productionSourceMap: false,
   configureWebpack: (config) => {
     if (isProduction) {
-      config.optimization.minimizer[0].options.minimizer.options.compress.drop_console = true;
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true;
     }
   },
   pwa: {
