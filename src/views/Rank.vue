@@ -160,48 +160,59 @@ export default {
     };
   },
   watch: {
-    mode() {
+    mode(v) {
+      console.log("watch mode: ", v);
       this.refresh();
-      this.$router.push({
-        name: "Rank",
-        query: { mode: this.mode, content: this.content },
-      });
+      this.$router
+        .push({
+          name: "Rank",
+          query: { mode: this.mode /* , content: this.content */ },
+        })
+        .catch(() => {});
     },
-    content() {
-      this.mode = "day";
-      this.refresh();
-      this.$router.push({
-        name: "Rank",
-        query: { mode: this.mode, content: this.content },
-      });
-    },
+    // content(v) {
+    //   console.log("watch content: ", v);
+    //   this.mode = "day";
+    //   this.refresh();
+    //   this.$router.push({
+    //     name: "Rank",
+    //     query: { mode: this.mode, content: this.content },
+    //   });
+    // },
     date() {
       this.refresh();
     },
     $route() {
-      this.mode = this.$route.query.mode;
-      this.content = this.$route.query.content;
+      if (this.$route.name != "Rank") return;
+      this.mode = this.$route.query.mode || "day";
+      // this.content = this.$route.query.content;
     },
   },
   mounted() {
+    console.log("mounted: ");
     setTimeout(() => {
       this.$refs.infload.$emit("$InfiniteLoading:reset");
       this.$refs.infload.attemptLoad();
     }, 1500);
   },
   created() {
-    this.mode = this.$route.query.mode;
-    this.content = this.$route.query.content;
-    if (!this.mode) this.mode = "day";
-    if (!this.content) this.content = "all";
+    this.mode = this.$route.query.mode || "day";
+    // this.content = this.$route.query.content;
+    // if (!this.mode) this.mode = "day";
+    // if (!this.content) this.content = "all";
   },
   methods: {
     refresh() {
+      console.log("refresh: ");
       this.illusts = [];
       this.loadid += 1;
       this.errorMsg = "";
       this.illustsPage = 0;
       this.$store.commit("CancelRequests/clearCancelToken");
+      setTimeout(() => {
+        this.$refs.infload.$emit("$InfiniteLoading:reset");
+        this.$refs.infload.attemptLoad();
+      }, 1500);
     },
     illustsPageNext: Lodash.throttle(function ($state) {
       let params = {

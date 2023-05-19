@@ -258,6 +258,7 @@ export default {
   }),
   watch: {
     $route() {
+      if (this.$route.name != "Detail") return;
       this.id = this.$route.params.id;
       this.$set(
         this,

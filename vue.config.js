@@ -1,15 +1,12 @@
-const path = require("path");
+const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
   productionSourceMap: false,
-  configureWebpack: () => ({
-    devtool: "source-map",
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
-    },
-  }),
+  configureWebpack: (config) => {
+    if (isProduction) {
+      config.optimization.minimizer[0].options.minimizer.options.compress.drop_console = true;
+    }
+  },
   pwa: {
     name: "Pxelk",
     themeColor: "#8F77B5",

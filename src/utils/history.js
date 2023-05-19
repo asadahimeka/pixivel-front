@@ -19,12 +19,16 @@ export async function addHistory(illust) {
     "aiType",
   ]);
   thumbIllust["time"] = new Date().getTime();
-  let count = await db[HISTORY_DATABASE_NAME].update(
-    thumbIllust["id"],
-    thumbIllust
-  );
-  if (count === 0) {
-    await db[HISTORY_DATABASE_NAME].add(thumbIllust);
+  try {
+    let count = await db[HISTORY_DATABASE_NAME].update(
+      thumbIllust["id"],
+      thumbIllust
+    );
+    if (count === 0) {
+      await db[HISTORY_DATABASE_NAME].add(thumbIllust);
+    }
+  } catch (error) {
+    console.log("error: ", error);
   }
 }
 

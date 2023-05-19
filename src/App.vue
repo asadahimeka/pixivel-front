@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <Nav />
+    <!-- <transition name="fade"> -->
     <keep-alive>
-      <transition name="fade">
-        <router-view />
-      </transition>
+      <router-view :key="$route.path" />
     </keep-alive>
+    <!-- </transition> -->
     <Footer />
     <!-- <b-modal v-model="showSponsor" has-modal-card trap-focus>
       <template>
@@ -138,10 +138,10 @@ optgroup,
 select,
 textarea {
   // "LXGW WenKai",
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
-    PingFang SC, Hiragino Sans GB, Source Han Sans SC, Source Han Sans CN,
-    Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol !important;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC,
+    Hiragino Sans GB, Source Han Sans SC, Source Han Sans CN, Microsoft YaHei,
+    Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol !important;
 }
 
 @media (prefers-color-scheme: light) {

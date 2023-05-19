@@ -4,16 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>Pxelk</title>
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="x-dns-prefetch-control" content="on" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <link rel="dns-prefetch" href="<%= process.env.VUE_APP_HIBIAPI_HOST %>">
     <link rel="dns-prefetch" href="<%= process.env.VUE_APP_PXIMG_PROXY %>">
     <link rel="preconnect" href="<%= process.env.VUE_APP_HIBIAPI_HOST %>" crossorigin />
     <link rel="preconnect" href="<%= process.env.VUE_APP_PXIMG_PROXY %>" crossorigin />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/5.0.17/fancybox/fancybox.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/lxgw-wenkai-webfont/1.6.0/style.css"> -->
     <script src="<%= BASE_URL %>js/gif.js"></script>
-    <title>Pxelk</title>
     <% if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_UMAMI_SRC) { %>
     <script async defer src="<%= process.env.VUE_APP_UMAMI_SRC %>" data-website-id="<%= process.env.VUE_APP_UMAMI_ID %>"></script>
     <% } %>
@@ -24,5 +25,6 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script src="https://cdn.staticfile.org/fancyapps-ui/5.0.17/fancybox/fancybox.umd.min.js"></script>
   </body>
 </html>

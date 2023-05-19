@@ -14,6 +14,7 @@
           :src="CurrentImgUrl"
           :alt="id + '-' + pageCount"
           :class="{ 'onepx-blur': loading }"
+          @click="viewImage"
         />
       </div>
     </div>
@@ -98,6 +99,26 @@ export default {
   },
   computed: {},
   methods: {
+    viewImage() {
+      const btns = [
+        "iterateZoom",
+        "rotateCCW",
+        "rotateCW",
+        "flipX",
+        "flipY",
+        "fullscreen",
+        "close",
+      ];
+      window.Fancybox.show(
+        this.urlList.map((e) => ({ src: e })),
+        {
+          startIndex: this.CurrentPage - 1,
+          Thumbs: { showOnStart: false },
+          Carousel: { infinite: false },
+          Toolbar: { display: { left: ["infobar"], middle: [], right: btns } },
+        }
+      );
+    },
     init() {
       this.destroy();
       this.createInit();

@@ -46,7 +46,10 @@ Vue.use(VueAxios, axios);
 Vue.use(VirtualMasonry, {
   additionalDistance: 1000,
 });
-Vue.use(InfiniteLoading);
+Vue.use(InfiniteLoading, {
+  distance: 1000,
+  forceUseInfiniteWrapper: "html",
+});
 
 Vue.prototype.moment = moment;
 Vue.prototype.Lodash = Lodash;

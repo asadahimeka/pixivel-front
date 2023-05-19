@@ -188,29 +188,30 @@ export default {
           query: {
             keyword: this.keyword,
             mode: this.mode,
-            features: this.queryFeatures?.join(","),
+            // features: this.queryFeatures?.join(","),
           },
         })
         .catch(() => {});
     },
-    queryFeatures() {
-      this.refresh(false);
-      this.$router
-        .push({
-          name: "Search",
-          query: {
-            keyword: this.keyword,
-            mode: this.mode,
-            features: this.queryFeatures.filter((n) => n).join(","),
-          },
-        })
-        .catch(() => {});
-    },
+    // queryFeatures() {
+    //   this.refresh(false);
+    //   this.$router
+    //     .push({
+    //       name: "Search",
+    //       query: {
+    //         keyword: this.keyword,
+    //         mode: this.mode,
+    //         features: this.queryFeatures.filter((n) => n).join(","),
+    //       },
+    //     })
+    //     .catch(() => {});
+    // },
     $route() {
+      if (this.$route.name != "Search") return;
       this.keyword = this.$route.query.keyword;
       this.finalKeyword = this.$route.query.keyword;
       this.mode = this.$route.query.mode;
-      this.queryFeatures = this.$route.query.features?.split(",") || [];
+      // this.queryFeatures = this.$route.query.features?.split(",") || [];
       if (!this.mode) this.mode = "illust";
       if (this.mode == "tag") this.tags = this.keyword.split(",");
     },
@@ -220,7 +221,7 @@ export default {
     if (!this.mode) this.mode = "illust";
     this.keyword = this.$route.query.keyword;
     this.finalKeyword = this.$route.query.keyword;
-    this.queryFeatures = this.$route.query.features?.split(",") || [];
+    // this.queryFeatures = this.$route.query.features?.split(",") || [];
     if (this.mode == "tag") this.tags = this.keyword.split(",");
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.keyword != "") {
@@ -250,7 +251,7 @@ export default {
       if (total) {
         this.finalKeyword = this.$route.query.keyword;
         this.keyword = this.$route.query.keyword;
-        this.queryFeatures = this.$route.query.features?.split(",") || [];
+        // this.queryFeatures = this.$route.query.features?.split(",") || [];
       }
       this.$store.commit("CancelRequests/clearCancelToken");
     },
@@ -262,7 +263,7 @@ export default {
             query: {
               keyword: keywd,
               mode: this.mode,
-              features: this.queryFeatures?.join(","),
+              // features: this.queryFeatures?.join(","),
             },
           })
           .catch(() => {});
@@ -276,7 +277,7 @@ export default {
             query: {
               keyword: this.keyword,
               mode: this.mode,
-              features: this.queryFeatures.join(","),
+              // features: this.queryFeatures.join(","),
             },
           })
           .catch(() => {});

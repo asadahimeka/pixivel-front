@@ -416,8 +416,9 @@ export default {
       });
     },
     $route() {
+      if (this.$route.name != "Account") return;
       if ("#" + this.tabNow.toString() == this.$route.hash) return;
-      this.tabNow = parseInt(this.$route.hash.split("#")[1]);
+      this.tabNow = parseInt(this.$route.hash.split("#")[1]) || 2;
     },
     "xSetting.r18"(val) {
       if (val) {
@@ -465,7 +466,7 @@ export default {
   },
   created() {
     if (this.$route.hash.length > 1) {
-      this.tabNow = parseInt(this.$route.hash.split("#")[1]);
+      this.tabNow = parseInt(this.$route.hash.split("#")[1]) || 2;
     }
   },
   computed: {
@@ -575,7 +576,7 @@ export default {
     }
     .link-active {
       background-color: #fff;
-      color: #E87A90;
+      color: #e87a90;
     }
   }
 }

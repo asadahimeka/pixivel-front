@@ -53,6 +53,7 @@ const routes = [
 ];
 
 const scrollBehavior = (to, from, savedPosition) => {
+  console.log("savedPosition: ", savedPosition);
   if (savedPosition) {
     return new Promise((resolve) => {
       const check = () => {
