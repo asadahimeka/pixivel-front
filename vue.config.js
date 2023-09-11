@@ -84,22 +84,7 @@ module.exports = {
       clientsClaim: true,
       importWorkboxFrom: "local",
       importsDirectory: "js",
-      runtimeCaching: [
-        {
-          urlPattern: /^https:\/\/.*\/api\/pixiv\//,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "api",
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-            expiration: {
-              maxAgeSeconds: 86400 * 1,
-              maxEntries: 30000,
-            },
-          },
-        },
-      ],
+      runtimeCaching: [],
     },
   },
 };
