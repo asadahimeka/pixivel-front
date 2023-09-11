@@ -431,15 +431,15 @@ export default {
         },
         {
           name: "Moeview",
-          ava: "https://moeview.kanata.ml/logo192.png",
+          ava: "https://moeview.pixiv.pics/logo192.png",
           desc: "A modern moebooru viewer.",
-          link: "https://moeview.kanata.ml",
+          link: "https://moeview.pixiv.pics",
         },
         {
           name: "Booru Masonry",
-          ava: "https://booru.kanata.ml/pwa-256x256.png",
+          ava: "https://booru.pixiv.pics/pwa-256x256.png",
           desc: "Booru sites masonry browsing mode.",
-          link: "https://booru.kanata.ml",
+          link: "https://booru.pixiv.pics",
         },
       ],
       links: [

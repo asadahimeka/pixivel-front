@@ -86,15 +86,7 @@ module.exports = {
       importsDirectory: "js",
       runtimeCaching: [
         {
-          urlPattern: /^https:\/\/.*\.kanata\.ml\/?$/,
-          handler: "StaleWhileRevalidate",
-          options: {
-            cacheName: "index-cache",
-            cacheableResponse: { statuses: [200] },
-          },
-        },
-        {
-          urlPattern: /^https:\/\/hibi.*\.cocomi\.cf/,
+          urlPattern: /^https:\/\/.*\/api\/pixiv\//,
           handler: "CacheFirst",
           options: {
             cacheName: "api",

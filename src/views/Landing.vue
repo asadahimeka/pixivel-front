@@ -259,7 +259,7 @@ export default {
           this.sampleIllusts = this.sampleIllusts.concat(
             this.Lodash.shuffle(
               adaptIllusts(response.data.illusts).filter((item) => {
-                return item.sanity < sanity;
+                return item.aiType != 2 && item.sanity < sanity;
               })
             )
           );
@@ -290,9 +290,13 @@ export default {
             return;
           }
           this.sampleUsers = this.sampleUsers.concat(
-            this.Lodash.shuffle(
-              response.data.user_previews.map(adaptSampleUser)
-            )
+            response.data.user_previews
+              .filter((e) => e.illusts.length > 0)
+              .sort(
+                (a, b) =>
+                  b.illusts[0].total_bookmarks - a.illusts[0].total_bookmarks
+              )
+              .map(adaptSampleUser)
           );
           this.sampleUsersLoadFlag = false;
           // if (this.sampleIllustsPage >= 20) {
