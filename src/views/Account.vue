@@ -401,7 +401,7 @@ export default {
       rLinks: [
         {
           name: "pixiv-viewer feat.asadahimeka",
-          ava: "https://pixiv.pics/app-icon.png",
+          ava: "https://pixiv.pictures/app-icon.png",
           desc: "又一个 Pixiv 插画小说阅览工具",
           link: "https://github.com/asadahimeka/pixiv-viewer",
         },
@@ -427,19 +427,19 @@ export default {
           name: "Pixiv Viewer (Cover lxns.org)",
           ava: "https://upload-bbs.miyoushe.com/upload/2023/05/17/190122060/bb04d77a846e6beca811c4be1d8e3442_1925447022596201285.png",
           desc: "A simple illust viewer.",
-          link: "https://github.com/asadahimeka/lxns.pixiv.pics",
+          link: "https://github.com/asadahimeka/lxns-pixiv",
         },
         {
           name: "Moeview",
-          ava: "https://moeview.pixiv.pics/logo192.png",
+          ava: "https://moeview.cocomi.eu.org/logo192.png",
           desc: "A modern moebooru viewer.",
-          link: "https://moeview.pixiv.pics",
+          link: "https://moeview.cocomi.eu.org",
         },
         {
           name: "Booru Masonry",
-          ava: "https://booru.pixiv.pics/pwa-256x256.png",
+          ava: "https://booru.cocomi.eu.org/pwa-256x256.png",
           desc: "Booru sites masonry browsing mode.",
-          link: "https://booru.pixiv.pics",
+          link: "https://booru.cocomi.eu.org",
         },
       ],
       links: [
